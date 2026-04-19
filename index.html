@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bring Your Own Agent — Elastic + MCP</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+  <style>
+    :root {
+      --elastic-bg: #1D1E24;
+      --elastic-teal: #00BFB3;
+      --elastic-yellow: #FEC514;
+      --elastic-blue: #1BA9F5;
+      --elastic-pink: #F04E98;
+      --elastic-text: #F5F7FA;
+      --elastic-muted: #98A2B3;
+    }
+    .reveal {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--elastic-text);
+    }
+    .reveal .slides { text-align: left; }
+    .reveal .slides section {
+      background: var(--elastic-bg);
+      padding: 0.5em 1.5em;
+      box-sizing: border-box;
+      height: 100%;
+    }
+    .reveal h1, .reveal h2, .reveal h3 {
+      color: var(--elastic-teal);
+      text-transform: none;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .reveal h1 { font-size: 1.9em; margin: 0.3em 0 0.2em; }
+    .reveal h2 { font-size: 1.35em; margin: 0.2em 0 0.3em; }
+    .reveal h3 { font-size: 0.85em; color: var(--elastic-yellow); margin: 0.3em 0 0.2em; }
+    .reveal p { font-size: 0.65em; line-height: 1.45; margin: 0.3em 0; }
+    .reveal li { font-size: 0.65em; line-height: 1.45; }
+    .reveal ul { list-style: none; padding-left: 1em; margin: 0.2em 0; }
+    .reveal ul li::before {
+      content: "\25B8";
+      color: var(--elastic-teal);
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+    .reveal ul li { margin-bottom: 0.15em; }
+    .reveal code {
+      font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+    }
+    .reveal pre {
+      width: 100%;
+      font-size: 0.42em;
+      box-shadow: none;
+      background: #131316;
+      border: 1px solid #2D2D3A;
+      border-radius: 6px;
+      margin: 0.3em 0;
+    }
+    .reveal pre code { padding: 0.6em 0.8em; line-height: 1.4; }
+    .reveal .highlight { color: var(--elastic-teal); }
+    .reveal .highlight-yellow { color: var(--elastic-yellow); }
+    .reveal .highlight-blue { color: var(--elastic-blue); }
+    .reveal .highlight-pink { color: var(--elastic-pink); }
+    .reveal .muted { color: var(--elastic-muted); font-size: 0.55em; }
+    .reveal .slide-title {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .reveal .slide-title h1 { font-size: 1.9em; margin-bottom: 0.2em; }
+    .reveal .slide-title .subtitle {
+      color: var(--elastic-muted);
+      font-size: 0.8em;
+    }
+    .reveal img {
+      max-height: 50vh;
+      border: none;
+      box-shadow: none;
+      background: none;
+    }
+    .reveal .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1em;
+      align-items: start;
+    }
+    .reveal .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.8em;
+      align-items: start;
+    }
+    .reveal .card {
+      background: #131316;
+      border: 1px solid #2D2D3A;
+      border-radius: 6px;
+      padding: 0.5em 0.7em;
+    }
+    .reveal .card h3 { margin-top: 0; font-size: 0.75em; }
+    .reveal .card p, .reveal .card li { font-size: 0.55em; }
+    .reveal .badge {
+      display: inline-block;
+      padding: 0.1em 0.5em;
+      border-radius: 4px;
+      font-size: 0.5em;
+      font-weight: 600;
+      margin-right: 0.2em;
+    }
+    .reveal .badge-teal { background: var(--elastic-teal); color: #1D1E24; }
+    .reveal .badge-yellow { background: var(--elastic-yellow); color: #1D1E24; }
+    .reveal .badge-blue { background: var(--elastic-blue); color: #1D1E24; }
+    .reveal .badge-pink { background: var(--elastic-pink); color: #1D1E24; }
+    .reveal blockquote {
+      background: #131316;
+      border-left: 4px solid var(--elastic-teal);
+      padding: 0.4em 0.8em;
+      font-style: italic;
+      font-size: 0.6em;
+      width: 90%;
+      margin: 0.4em 0;
+    }
+    .reveal a { color: var(--elastic-blue); }
+    .reveal .progress { color: var(--elastic-teal); }
+    .reveal .controls button { color: var(--elastic-teal); }
+    .reveal .badge-line { margin: 0.15em 0; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- Slide 1: Title -->
+  <section class="slide-title">
+    <h1>Bring Your Own Agent</h1>
+    <p class="subtitle">Power Any AI Framework with Elastic via MCP</p>
+    <p class="muted" style="margin-top:0.5em;">Integrating Elasticsearch with Third-Party Agentic Frameworks</p>
+  </section>
+
+  <!-- Slide 2: The Reality -->
+  <section>
+    <h2>The Reality</h2>
+    <p>You've already made your framework choice.</p>
+    <div class="three-col" style="margin:0.6em 0;">
+      <div class="card" style="text-align:center;">
+        <h3>Google ADK</h3>
+        <p>Vertex AI</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <h3>LangGraph</h3>
+        <p>LangChain</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <h3>CrewAI</h3>
+        <p>Multi-Agent</p>
+      </div>
+    </div>
+    <p>These are just three examples. You shouldn't have to abandon your framework choice to leverage the power of your data in Elastic.</p>
+    <p class="muted" style="margin-top:0.3em;">Any MCP-compatible framework works &mdash; today's demo uses these three.</p>
+  </section>
+
+  <!-- Slide 3: Elastic Agent Builder -->
+  <section>
+    <h2>Elastic Agent Builder</h2>
+    <p>Elastic has a full agentic AI framework <span class="highlight">built into Kibana</span>.</p>
+    <ul>
+      <li>GUI-based agent creation and management</li>
+      <li>ES|QL-powered tool definitions</li>
+      <li>Built-in MCP server endpoint</li>
+      <li>Hybrid search, semantic fields, reranking &mdash; all accessible as tools</li>
+    </ul>
+    <p style="margin-top:0.5em;">But the real power is that <span class="highlight-yellow">these tools are not locked into our framework</span>.</p>
+  </section>
+
+  <!-- Slide 4: MCP — The Bridge -->
+  <section>
+    <h2>MCP: The Bridge</h2>
+    <p>The <span class="highlight">Model Context Protocol</span> is an open standard for connecting AI agents to data sources and tools.</p>
+    <div class="two-col" style="margin-top:0.4em;">
+      <div>
+        <h3>How It Works</h3>
+        <ul>
+          <li>Elastic exposes tools via a standard MCP endpoint</li>
+          <li>Any MCP-compatible client connects over HTTP</li>
+          <li>Tools are discovered and invoked at runtime</li>
+          <li>Framework-agnostic by design</li>
+        </ul>
+      </div>
+      <div class="card" style="text-align:center;">
+        <p style="font-size:0.6em; color:var(--elastic-muted);">Single endpoint, any framework</p>
+        <pre><code class="language-text" data-noescape style="font-size:0.85em; text-align:left;">  ┌──────────────┐
+  │  Google ADK   │──┐
+  └──────────────┘  │
+  ┌──────────────┐  │  ┌─────────────┐
+  │  LangGraph   │──┼─▶│ Elastic MCP │
+  └──────────────┘  │  │  Endpoint   │
+  ┌──────────────┐  │  └─────────────┘
+  │   CrewAI     │──┘
+  └──────────────┘</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 5: Architecture -->
+  <section>
+    <h2>Architecture</h2>
+    <img src="assets/arch.png" alt="High-level architecture diagram">
+    <p class="muted">Terraform provisions Elastic Serverless &rarr; Data indexed &rarr; MCP tools created via Agent Builder API &rarr; Consumed by any framework</p>
+  </section>
+
+  <!-- Slide 6: What Elastic Brings to Your Agents -->
+  <section>
+    <h2>What Elastic Brings to Your Agents</h2>
+    <div class="two-col" style="margin-top:0.4em;">
+      <div>
+        <h3>Search Capabilities</h3>
+        <ul>
+          <li><span class="highlight">Hybrid search</span> &mdash; lexical + semantic in one query</li>
+          <li><span class="highlight">FUSE</span> &mdash; Linear or RRF fusion of multiple search strategies</li>
+          <li><span class="highlight">RERANK</span> &mdash; neural reranking (e.g. Jina Reranker v3)</li>
+          <li><span class="highlight">semantic_text</span> &mdash; automatic embeddings at index time</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Data Platform</h3>
+        <ul>
+          <li><span class="highlight-yellow">ES|QL</span> &mdash; powerful piped query language</li>
+          <li>Structured + unstructured data in one platform</li>
+          <li>Serverless &mdash; zero infrastructure management</li>
+          <li>Scales to billions of documents</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:0.5em;">All of this is <span class="highlight-yellow">exposed as MCP tools</span> that any agent can call.</p>
+  </section>
+
+  <!-- Slide 7: ES|QL-Powered MCP Tools -->
+  <section>
+    <h2>ES|QL-Powered MCP Tools</h2>
+    <p>Define once in Elastic. Use from any framework.</p>
+    <div class="two-col" style="margin-top:0.3em;">
+      <div>
+        <h3>Product Search</h3>
+        <pre><code class="language-sql">FROM products METADATA _score
+| FORK
+  (WHERE MATCH(name, ?search_term,
+    {"boost": 2.0})
+    OR MATCH(description, ?search_term)
+   | SORT _score DESC | LIMIT 100)
+  (WHERE MATCH(description.embedding,
+    ?search_term)
+   | SORT _score DESC | LIMIT 100)
+| FUSE LINEAR
+    WITH { "normalizer": "minmax" }
+| RERANK ?search_term ON description
+    WITH { "inference_id":
+           ".jina-reranker-v3" }
+| SORT _score DESC | LIMIT 3</code></pre>
+        <p class="muted">Hybrid search + fusion + reranking</p>
+      </div>
+      <div>
+        <h3>Review Lookup</h3>
+        <pre><code class="language-sql">FROM reviews
+| WHERE product_id == ?id
+| KEEP review
+| LIMIT 5</code></pre>
+        <p class="muted">Simple chained lookup by product ID</p>
+        <div class="card" style="margin-top:0.3em;">
+          <p style="font-size:0.55em;">Agents chain these tools: search for a product, then fetch its reviews &mdash; multi-step reasoning powered by Elastic data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 8: Demo — Google ADK -->
+  <section>
+    <h2>Demo: Google ADK on Vertex AI</h2>
+    <div class="two-col">
+      <div>
+        <p class="badge-line"><span class="badge badge-teal">Framework</span> Google ADK</p>
+        <p class="badge-line"><span class="badge badge-yellow">LLM</span> Gemini 2.5 Flash</p>
+        <p class="badge-line"><span class="badge badge-blue">Tools</span> Elastic MCP + local shipping mock</p>
+        <h3>Query</h3>
+        <p><em>"I'm looking for a standing desk for dual monitors. Find me an option, summarize reviews on stability and motor noise, and include shipping."</em></p>
+      </div>
+      <div>
+        <h3>Agent Response</h3>
+        <div class="card">
+          <p>Found <strong>Ultra-Wide Standing Desk</strong> &mdash; $698.68</p>
+          <p><strong>Motor Noise:</strong> "whisper quiet and very fast"</p>
+          <p><strong>Stability:</strong> "wobbles a lot at max height"</p>
+          <p><strong>Shipping:</strong> $8.99, 3-5 business days</p>
+        </div>
+        <p class="muted">Agent chained: search_products &rarr; get_reviews &rarr; calculate_shipping</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 9: Demo — LangGraph -->
+  <section>
+    <h2>Demo: LangGraph</h2>
+    <div class="two-col">
+      <div>
+        <p class="badge-line"><span class="badge badge-teal">Framework</span> LangGraph</p>
+        <p class="badge-line"><span class="badge badge-yellow">LLM</span> OpenAI GPT 5.4 nano</p>
+        <p class="badge-line"><span class="badge badge-blue">Tools</span> Elastic MCP + local shipping mock</p>
+        <h3>Query</h3>
+        <p><em>"I need a quiet mechanical keyboard for programming in a shared office. Summarize typing feel and noise level. What's the shipping?"</em></p>
+      </div>
+      <div>
+        <h3>Agent Response</h3>
+        <div class="card">
+          <p>Found <strong>Minimalist Keyboard</strong> (KEYB-0047)</p>
+          <p><strong>Typing feel:</strong> "tactile feedback is amazing" &mdash; but "switches feel a bit mushy"</p>
+          <p><strong>Noise:</strong> "quite loud for an open office" &mdash; spacebar stabilizer rattle</p>
+          <p><strong>Shipping:</strong> $8.99, 3-5 business days</p>
+        </div>
+        <p class="muted">Same Elastic tools, different framework, different LLM</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 10: Demo — CrewAI -->
+  <section>
+    <h2>Demo: CrewAI</h2>
+    <div class="two-col">
+      <div>
+        <p class="badge-line"><span class="badge badge-teal">Framework</span> CrewAI</p>
+        <p class="badge-line"><span class="badge badge-yellow">LLM</span> Claude Haiku</p>
+        <p class="badge-line"><span class="badge badge-blue">Tools</span> Elastic MCP + local shipping mock</p>
+        <h3>Query</h3>
+        <p><em>"I need a high-resolution monitor with accurate colors for design work. Summarize reviews on color accuracy and eye strain. What's the shipping?"</em></p>
+      </div>
+      <div>
+        <h3>Agent Response</h3>
+        <div class="card">
+          <p>Found <strong>27" 4K IPS Monitor</strong> (MONI-0081) &mdash; $395.76</p>
+          <p><strong>Color accuracy:</strong> "stunning right out of the box, great for design work"</p>
+          <p><strong>Eye strain:</strong> "noticeably reduced compared to my old TN panel"</p>
+          <p><strong>Shipping:</strong> $8.99, 3-5 business days</p>
+        </div>
+        <p class="muted">Same Elastic tools, third framework, third LLM vendor</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 11: One Integration, Any Framework -->
+  <section>
+    <h2>One Integration, Any Framework</h2>
+    <div class="three-col" style="margin:0.5em 0;">
+      <div class="card" style="text-align:center; border-top: 3px solid var(--elastic-teal);">
+        <h3>Google ADK</h3>
+        <p>Gemini 2.5 Flash</p>
+        <p style="color:var(--elastic-teal);">&#10003; search_products</p>
+        <p style="color:var(--elastic-teal);">&#10003; get_reviews</p>
+      </div>
+      <div class="card" style="text-align:center; border-top: 3px solid var(--elastic-yellow);">
+        <h3>LangGraph</h3>
+        <p>GPT 5.4 nano</p>
+        <p style="color:var(--elastic-teal);">&#10003; search_products</p>
+        <p style="color:var(--elastic-teal);">&#10003; get_reviews</p>
+      </div>
+      <div class="card" style="text-align:center; border-top: 3px solid var(--elastic-pink);">
+        <h3>CrewAI</h3>
+        <p>Claude Haiku</p>
+        <p style="color:var(--elastic-teal);">&#10003; search_products</p>
+        <p style="color:var(--elastic-teal);">&#10003; get_reviews</p>
+      </div>
+    </div>
+    <blockquote>Same MCP tools. Same Elastic data. Same search quality.<br>Three different frameworks. Three different LLMs. Minimal glue code.</blockquote>
+  </section>
+
+  <!-- Slide 12: Beyond E-Commerce -->
+  <section>
+    <h2>Beyond E-Commerce</h2>
+    <p>This pattern works anywhere your data lives in Elasticsearch.</p>
+    <div class="two-col" style="margin-top:0.4em;">
+      <ul>
+        <li><span class="highlight-blue">Observability</span> &mdash; query logs, metrics, and traces</li>
+        <li><span class="highlight-pink">Security</span> &mdash; search alerts, events, and threat intel</li>
+        <li><span class="highlight-yellow">Knowledge Bases</span> &mdash; internal docs, wikis, support articles</li>
+        <li><span class="highlight">Support</span> &mdash; ticket history, resolution patterns</li>
+      </ul>
+      <div class="card">
+        <h3>The Pattern</h3>
+        <p style="font-size:0.6em;">1. Index your data in Elasticsearch</p>
+        <p style="font-size:0.6em;">2. Define ES|QL tools in Agent Builder</p>
+        <p style="font-size:0.6em;">3. Connect from any framework via MCP</p>
+        <p style="font-size:0.6em;">4. Your agents get Elastic-powered search</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 13: Get Started -->
+  <section class="slide-title">
+    <h2>Get Started</h2>
+    <p style="margin-top:0.5em;"><span class="highlight">Elastic Agent Builder</span><br>
+      <span class="muted">elastic.co/elasticsearch/agent-builder</span></p>
+    <p><span class="highlight-yellow">MCP Integration Docs</span><br>
+      <span class="muted">elastic.co/docs</span></p>
+    <p><span class="highlight-blue">Demo Source Code</span><br>
+      <span class="muted">github.com/joeywhelan/elastic-mcp-multi-agent-demo</span></p>
+    <p style="font-size:0.8em; margin-top:0.8em;">Your framework. <span class="highlight">Your choice.</span> Elastic's data and search power.</p>
+  </section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    center: false,
+    transition: 'slide',
+    plugins: [RevealHighlight]
+  });
+</script>
+</body>
+</html>

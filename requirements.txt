@@ -1,0 +1,12 @@
+jupyter
+google-adk
+google-cloud-aiplatform
+google-cloud-storage
+elasticsearch
+python-dotenv
+requests
+tqdm
+langchain
+langchain-mcp-adapters
+langchain-openai
+crewai[anthropic]

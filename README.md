@@ -11,7 +11,7 @@
 This is a demonstration of integration of Elastic MCP tools to multiple third party Agentic AI frameworks.
 
 ## Architecture <a name="architecture"></a>
-![architecture](assets/arch.jpg) 
+![architecture](assets/arch.png) 
 
 
 ## Features <a name="features"></a>

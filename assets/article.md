@@ -66,6 +66,7 @@ reviews_mapping = {
     }
 }
 ```
+![index_mgt](index_mgt.png)
 ---
 
 ## Creating Elastic MCP Tools
@@ -73,7 +74,8 @@ I use the Agent Builder REST API to create two ES|QL-based tools: one for produc
 
 ### Product Search ES|QL
 This is a hybrid search (semantic + lexical) utilizing a linear fusion of two.  I also invoke a reranker to fine-tune the hybrid result.  An Agent would use this tool with the user's query to find the appropriate products from the catalog.
-```sql
+```python
+esql_1 = '''
 FROM products METADATA _id, _index, _score
 | FORK
   (WHERE MATCH(name, ?search_term, {"boost": 2.0}) OR MATCH(description, ?search_term) | SORT _score DESC | LIMIT 100)
@@ -83,17 +85,63 @@ FROM products METADATA _id, _index, _score
 | RERANK ?search_term ON description WITH { "inference_id": ".jina-reranker-v3" }
 | SORT _score DESC
 | LIMIT 3
+'''
 ```
+```python
+    response = requests.post(
+        f"{os.environ.get('KIBANA_URL')}{ENDPOINT}",
+        headers=headers,
+        json={
+            "id": TOOL_1_ID,
+            "tags": ["office_products"],
+            "type": "esql",
+            "description": "Search tool for finding products that best match the natural language query provided by the user.",
+            "configuration": {
+                "query": esql_1,
+                "params": {
+                    "search_term": {
+                        "type": "string",
+                        "description": "The natural language query provided by the user to search for relevant products."
+                    }
+                }
+            }
+        }
+    )
+```
+![search_products](search_products.png)
 
-### Review Search ES|QL
+### Get Review ES|QL
 This is a simple term search for finding reviews associated with a given product.  An Agent would call this tool after it had found the appropriate product from the tool above and now wanted to pull reviews for additional information.
-```sql
+```python
+esql_2 = '''
 FROM reviews
 | WHERE product_id == ?id
 | KEEP review
 | LIMIT 5
+'''
 ```
-
+```python
+    response = requests.post(
+        f"{os.environ.get('KIBANA_URL')}{ENDPOINT}",
+        headers=headers,
+        json={
+            "id": TOOL_1_ID,
+            "tags": ["office_products"],
+            "type": "esql",
+            "description": "Search tool for finding products that best match the natural language query provided by the user.",
+            "configuration": {
+                "query": esql_1,
+                "params": {
+                    "search_term": {
+                        "type": "string",
+                        "description": "The natural language query provided by the user to search for relevant products."
+                    }
+                }
+            }
+        }
+    )
+```
+![get_reviews](get_reviews.png)
 ---
 
 ## Scenario 1 - Google ADK on Vertex.ai

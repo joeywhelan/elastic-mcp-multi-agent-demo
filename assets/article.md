@@ -70,7 +70,7 @@ reviews_mapping = {
 ---
 
 ## Creating Elastic MCP Tools
-I use the Agent Builder REST API to create two ES|QL-based tools: one for product search and the other for fetching the reviews associated with a given product.
+I use the Agent Builder REST API to create two ES|QL-based tools: one for product search and the other for fetching the reviews associated with a given product.  The Agent will chain these two tools, along with a third local mock tool for calculating delivery costs, in formulating its responses to the queries we provide.
 
 ### Product Search ES|QL
 This is a hybrid search (semantic + lexical) utilizing a linear fusion of two.  I also invoke a reranker to fine-tune the hybrid result.  An Agent would use this tool with the user's query to find the appropriate products from the catalog.

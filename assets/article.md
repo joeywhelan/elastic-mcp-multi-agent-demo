@@ -125,16 +125,16 @@ FROM reviews
         f"{os.environ.get('KIBANA_URL')}{ENDPOINT}",
         headers=headers,
         json={
-            "id": TOOL_1_ID,
+            "id": TOOL_2_ID,
             "tags": ["office_products"],
             "type": "esql",
-            "description": "Search tool for finding products that best match the natural language query provided by the user.",
+            "description": "Search tool for finding reviews for a given product id.",
             "configuration": {
-                "query": esql_1,
+                "query": esql_2,
                 "params": {
-                    "search_term": {
+                    "id": {
                         "type": "string",
-                        "description": "The natural language query provided by the user to search for relevant products."
+                        "description": "The product ID for which to retrieve reviews."
                     }
                 }
             }

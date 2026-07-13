@@ -35,7 +35,7 @@
       letter-spacing: -0.02em;
     }
     .reveal h1 { font-size: 1.9em; margin: 0.3em 0 0.2em; }
-    .reveal h2 { font-size: 1.35em; margin: 0.2em 0 0.3em; }
+    .reveal h2 { font-size: 1.35em; margin: 0.2em 0 0.25em; }
     .reveal h3 { font-size: 0.85em; color: var(--elastic-yellow); margin: 0.3em 0 0.2em; }
     .reveal p { font-size: 0.65em; line-height: 1.45; margin: 0.3em 0; }
     .reveal li { font-size: 0.65em; line-height: 1.45; }
@@ -54,14 +54,14 @@
     }
     .reveal pre {
       width: 100%;
-      font-size: 0.42em;
+      font-size: 0.4em;
       box-shadow: none;
       background: #131316;
       border: 1px solid #2D2D3A;
       border-radius: 6px;
       margin: 0.3em 0;
     }
-    .reveal pre code { padding: 0.6em 0.8em; line-height: 1.4; }
+    .reveal pre code { padding: 0.6em 0.8em; line-height: 1.4; max-height: 460px; }
     .reveal .highlight { color: var(--elastic-teal); }
     .reveal .highlight-yellow { color: var(--elastic-yellow); }
     .reveal .highlight-blue { color: var(--elastic-blue); }
@@ -79,7 +79,8 @@
       font-size: 0.8em;
     }
     .reveal img {
-      max-height: 50vh;
+      max-height: 440px;
+      max-width: 100%;
       border: none;
       box-shadow: none;
       background: none;
@@ -129,6 +130,7 @@
     .reveal .progress { color: var(--elastic-teal); }
     .reveal .controls button { color: var(--elastic-teal); }
     .reveal .badge-line { margin: 0.15em 0; }
+    .reveal .compact p, .reveal .compact li { font-size: 0.58em; }
   </style>
 </head>
 <body>
@@ -178,10 +180,10 @@
   </section>
 
   <!-- Slide 4: MCP — The Bridge -->
-  <section>
+  <section class="compact">
     <h2>MCP: The Bridge</h2>
     <p>The <span class="highlight">Model Context Protocol</span> is an open standard for connecting AI agents to data sources and tools.</p>
-    <div class="two-col" style="margin-top:0.4em;">
+    <div class="two-col" style="margin-top:0.3em;">
       <div>
         <h3>How It Works</h3>
         <ul>
@@ -194,7 +196,7 @@
       <div class="card" style="text-align:center;">
         <p style="font-size:0.6em; color:var(--elastic-muted);">Single endpoint, any framework</p>
         <pre><code class="language-text" data-noescape style="font-size:0.85em; text-align:left;">  ┌──────────────┐
-  │  Google ADK   │──┐
+  │  Google ADK  │──┐
   └──────────────┘  │
   ┌──────────────┐  │  ┌─────────────┐
   │  LangGraph   │──┼─▶│ Elastic MCP │
@@ -214,9 +216,9 @@
   </section>
 
   <!-- Slide 6: What Elastic Brings to Your Agents -->
-  <section>
+  <section class="compact">
     <h2>What Elastic Brings to Your Agents</h2>
-    <div class="two-col" style="margin-top:0.4em;">
+    <div class="two-col" style="margin-top:0.3em;">
       <div>
         <h3>Search Capabilities</h3>
         <p class="muted" style="font-size:0.55em; margin:0;">(highlights from this demo)</p>
@@ -237,7 +239,7 @@
         </ul>
       </div>
     </div>
-    <p style="margin-top:0.5em;">These and many more capabilities can be
+    <p style="margin-top:0.4em;">These and many more capabilities can be
        <span class="highlight-yellow">exposed as MCP tools</span> that any agent can call.</p>
   </section>
 

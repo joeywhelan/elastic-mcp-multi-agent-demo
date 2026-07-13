@@ -1,18 +1,21 @@
 # Elastic MCP Multi-Agent Demo
 ## Contents
 1.  [Summary](#summary)
-2.  [Architecture](#architecture)
-3.  [Features](#features)
-4.  [Prerequisites](#prerequisites)
-5.  [Installation](#installation)
-6.  [Usage](#usage)
+2.  [Presentation](#presentation)
+3.  [Architecture](#architecture)
+4.  [Features](#features)
+5.  [Prerequisites](#prerequisites)
+6.  [Installation](#installation)
+7.  [Usage](#usage)
 
 ## Summary <a name="summary"></a>
 This is a demonstration of integration of Elastic MCP tools to multiple third party Agentic AI frameworks.
 
+## Presentation <a name="presentation"></a>
+https://joeywhelan.github.io/elastic-mcp-multi-agent-demo/
+
 ## Architecture <a name="architecture"></a>
 ![architecture](assets/arch.png) 
-
 
 ## Features <a name="features"></a>
 - Jupyter notebook
